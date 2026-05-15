@@ -13,6 +13,11 @@ export function useClientApiKeysService() {
                     token,
                     body: payload,
                 }),
+            deleteLlave: async (llaveId) =>
+                apiRequest(`${base}/${encodeURIComponent(String(llaveId).trim())}`, {
+                    method: 'DELETE',
+                    token,
+                }),
         }),
         [token],
     );

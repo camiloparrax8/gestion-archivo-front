@@ -25,9 +25,17 @@ const Input = ({
   widthVariant = 'medium',
   sx,
   InputProps: InputPropsProp,
+  InputLabelProps: inputLabelPropsProp,
   slotProps: slotPropsProp,
   ...props
 }) => {
+  const hasValue =
+    value !== undefined &&
+    value !== null &&
+    (typeof value === 'number' || String(value).length > 0);
+
+  const shouldShrinkLabel =
+    inputLabelPropsProp?.shrink ?? (hasValue || Boolean(placeholder));
   const mergedInputProps = {
     ...(InputPropsProp || {}),
   };
@@ -71,6 +79,10 @@ const Input = ({
       error={error}
       helperText={helperText}
       placeholder={placeholder}
+      InputLabelProps={{
+        ...inputLabelPropsProp,
+        shrink: shouldShrinkLabel,
+      }}
       type={type}
       multiline={long ? true : multiline}
       rows={long ? 2 : rows}
@@ -78,18 +90,12 @@ const Input = ({
       minRows={long ? undefined : minRows}
       sx={{
         width: currentWidth,
-        '& .MuiOutlinedInput-root': {
-          backgroundColor: 'white',
-        },
         ...(long && {
-          '& .MuiOutlinedInput-root': {
-            backgroundColor: 'white',
-            '& textarea': {
-              resize: 'horizontal',
-              minHeight: '24px',
-              maxHeight: '96px',
-              minWidth: '400px',
-            },
+          '& .MuiOutlinedInput-root textarea': {
+            resize: 'horizontal',
+            minHeight: '24px',
+            maxHeight: '96px',
+            minWidth: '400px',
           },
         }),
         ...sx,
@@ -125,6 +131,7 @@ Input.propTypes = {
   widthVariant: PropTypes.oneOf(['small', 'medium', 'large', 'full']),
   sx: PropTypes.object,
   InputProps: PropTypes.object,
+  InputLabelProps: PropTypes.object,
   slotProps: PropTypes.object,
 };
 

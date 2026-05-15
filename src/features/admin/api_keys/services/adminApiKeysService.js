@@ -8,6 +8,7 @@ export function useAdminApiKeysService() {
             getLlaves: clientesService.getLlaves,
             updateEstadoLlave: clientesService.updateEstadoLlave,
             rotarLlave: clientesService.rotarLlave,
+            deleteLlave: clientesService.deleteLlave,
         }),
         [clientesService],
     );

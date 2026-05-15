@@ -1,5 +1,6 @@
+import { alpha } from '@mui/material/styles';
 import { Box, Chip, IconButton } from '@mui/material';
-import { CheckCircleOutlined, EditOutlined } from '@mui/icons-material';
+import { EditOutlined, VpnKeyOutlined } from '@mui/icons-material';
 import {
   DataTableEmpty,
   DataTableRoot,
@@ -30,8 +31,7 @@ function telefonoTexto(row) {
 export function AdminClientesTable({
   clientes = [],
   loading = false,
-  selectedId = '',
-  onSelectCliente,
+  onVerLlaves,
   onRefresh,
   onNuevoCliente,
   onEditarCliente,
@@ -42,7 +42,7 @@ export function AdminClientesTable({
     <>
       <button
         type="button"
-        className="icon-btn icon-btn--ghost"
+        className="icon-btn icon-btn--ghost icon-btn--accent"
         disabled={loading}
         onClick={onRefresh}
         aria-label="Actualizar listado de clientes"
@@ -99,18 +99,8 @@ export function AdminClientesTable({
                 clientes.map((row, index) => {
                   const id = rowPublicId(row);
                   const activo = row?.activo !== false && row?.activo !== 0;
-                  const seleccionado = Boolean(selectedId && id && selectedId === id);
                   return (
-                    <tr
-                      key={id || `cliente-row-${index}`}
-                      style={
-                        seleccionado
-                          ? {
-                              backgroundColor: 'color-mix(in srgb, var(--primary) 10%, transparent)',
-                            }
-                          : undefined
-                      }
-                    >
+                    <tr key={id || `cliente-row-${index}`}>
                       <td>{row?.nombre || '—'}</td>
                       <td className="oui-dt-muted">{row?.email || '—'}</td>
                       <td className="oui-dt-muted">{documentoTexto(row)}</td>
@@ -127,21 +117,33 @@ export function AdminClientesTable({
                       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 0.25 }}>
                         <IconButton
                           size="small"
-                          color="success"
                           disabled={loading || !id}
-                          onClick={() => onSelectCliente?.(id)}
-                          aria-label="Seleccionar cliente"
-                          title="Seleccionar cliente"
+                          onClick={() => onVerLlaves?.(id)}
+                          aria-label="Ver API keys del cliente"
+                          title="Ver API keys"
+                          sx={(theme) => ({
+                            color: theme.palette.info.main,
+                            backgroundColor: alpha(theme.palette.info.main, 0.12),
+                            '&:hover': {
+                              backgroundColor: alpha(theme.palette.info.main, 0.22),
+                            },
+                          })}
                         >
-                          <CheckCircleOutlined fontSize="small" />
+                          <VpnKeyOutlined fontSize="small" />
                         </IconButton>
                         <IconButton
                           size="small"
-                          color="primary"
                           disabled={loading || !id}
                           onClick={() => onEditarCliente?.(row)}
                           aria-label="Editar cliente"
                           title="Editar cliente"
+                          sx={(theme) => ({
+                            color: theme.palette.primary.main,
+                            backgroundColor: alpha(theme.palette.primary.main, 0.12),
+                            '&:hover': {
+                              backgroundColor: alpha(theme.palette.primary.main, 0.22),
+                            },
+                          })}
                         >
                           <EditOutlined fontSize="small" />
                         </IconButton>

@@ -308,31 +308,30 @@ h3 {
 }
 
 .btn-primary {
-  background: linear-gradient(180deg, var(--color-hero-gradient) 0%, var(--color-deep-cosmos) 100%);
-  color: #fafeff;
-  border-color: color-mix(in srgb, var(--color-hero-gradient) 68%, var(--color-deep-cosmos) 32%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 1px 0 rgba(0, 16, 51, 0.12);
+  background: var(--color-hero-gradient);
+  color: #ffffff;
+  border-color: color-mix(in srgb, var(--color-hero-gradient) 82%, var(--color-accent-pulse) 18%);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-hero-gradient) 22%, transparent);
 }
 
 .btn-primary:hover:enabled {
   transform: translateY(-1px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 12px 28px color-mix(in srgb, var(--color-hero-gradient) 42%, transparent);
+  background: color-mix(in srgb, var(--color-hero-gradient) 86%, var(--color-accent-pulse) 14%);
+  border-color: color-mix(in srgb, var(--color-hero-gradient) 72%, var(--color-accent-pulse) 28%);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-hero-gradient) 26%, transparent);
 }
 
 .btn-primary:active:enabled {
   transform: translateY(0);
-  box-shadow: inset 0 2px 6px rgba(0, 24, 66, 0.35);
+  background: color-mix(in srgb, var(--color-hero-gradient) 78%, var(--color-deep-cosmos) 22%);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-deep-cosmos) 18%, transparent);
 }
 
 .btn-primary:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--color-hero-gradient) 32%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    0 0 0 3px color-mix(in srgb, var(--color-hero-gradient) 28%, transparent),
+    0 1px 2px color-mix(in srgb, var(--color-hero-gradient) 18%, transparent);
 }
 
 .btn:disabled {
@@ -757,6 +756,15 @@ pre {
   background: color-mix(in srgb, var(--color-ice-veil) 40%, #fff 60%);
 }
 
+.icon-btn--accent {
+  color: var(--color-hero-gradient);
+}
+
+.icon-btn--accent:hover:enabled {
+  background: color-mix(in srgb, var(--color-hero-gradient) 14%, transparent);
+  border-color: color-mix(in srgb, var(--color-hero-gradient) 35%, #e2e8f0 65%);
+}
+
 .icon-btn--danger {
   color: #b91c1c;
 }
@@ -912,6 +920,18 @@ html[data-mui-color-scheme='dark'] .file-picker-title {
   color: var(--color-midnight-navy);
 }
 
+html[data-mui-color-scheme='dark'] .btn-primary {
+  background: var(--color-hero-gradient);
+  color: #ffffff;
+  border-color: color-mix(in srgb, var(--color-hero-gradient) 70%, var(--color-accent-pulse) 30%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+html[data-mui-color-scheme='dark'] .btn-primary:hover:enabled {
+  background: color-mix(in srgb, var(--color-hero-gradient) 80%, var(--color-accent-pulse) 20%);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--color-hero-gradient) 32%, transparent);
+}
+
 html[data-mui-color-scheme='dark'] .btn-secondary {
   background: hsl(220, 22%, 14%);
   color: #cbd5e1;
@@ -935,6 +955,14 @@ html[data-mui-color-scheme='dark'] .icon-btn {
 
 html[data-mui-color-scheme='dark'] .icon-btn--ghost:hover:enabled {
   background: color-mix(in srgb, var(--surface-pure-surface) 55%, #334155 45%);
+}
+
+html[data-mui-color-scheme='dark'] .icon-btn--accent {
+  color: var(--color-accent-pulse);
+}
+
+html[data-mui-color-scheme='dark'] .icon-btn--accent:hover:enabled {
+  background: color-mix(in srgb, var(--color-accent-pulse) 18%, transparent);
 }
 
 html[data-mui-color-scheme='dark'] .icon-btn--danger:hover:enabled {
