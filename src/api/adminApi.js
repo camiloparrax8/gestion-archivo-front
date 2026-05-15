@@ -18,4 +18,8 @@ export const adminApi = {
         token,
         body: { activo },
     }),
+    eliminarLlave: (token, clienteId, llaveId) => apiRequest(
+        `/api/v1/admin/clientes/${encodeURIComponent(String(clienteId).trim())}/llaves/${encodeURIComponent(String(llaveId).trim())}`,
+        { method: 'DELETE', token },
+    ),
 };

@@ -3,7 +3,7 @@ import { ApiHttpError } from '../../../../core/api/apiClient';
 import { AdminLlavesTable } from '../../../admin/clientes/components/AdminLlavesTable';
 import { CrearLlaveDialog } from '../../../admin/clientes/components/CrearLlaveDialog';
 import { useClientApiKeysService } from '../services/clientApiKeysService';
-import { Card, Feedback, SectionHeader } from '../../../../shared/ui';
+import { Button, Card, Dialog, Feedback, SectionHeader } from '../../../../shared/ui';
 
 function errorMessage(error) {
   if (error instanceof ApiHttpError) return `${error.message} (HTTP ${error.status})`;
@@ -26,6 +26,8 @@ export function MisApiKeysPage() {
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('info');
   const [dialogLlaveOpen, setDialogLlaveOpen] = useState(false);
+  const [llaveAEliminar, setLlaveAEliminar] = useState(null);
+  const [eliminando, setEliminando] = useState(false);
 
   const cargarLlaves = useCallback(async () => {
     setLoading(true);
@@ -50,6 +52,29 @@ export function MisApiKeysPage() {
     (payload) => clientApiKeysService.createLlave(payload),
     [clientApiKeysService],
   );
+
+  const solicitarEliminarLlave = useCallback((llaveId) => {
+    const llave = llaves.find((l) => (l.publicId ?? l.id) === llaveId);
+    const nombre = llave?.nombre?.trim() || 'esta llave';
+    setLlaveAEliminar({ id: llaveId, nombre });
+  }, [llaves]);
+
+  const confirmarEliminarLlave = useCallback(async () => {
+    if (!llaveAEliminar?.id) return;
+    setEliminando(true);
+    try {
+      await clientApiKeysService.deleteLlave(llaveAEliminar.id);
+      setLlaveAEliminar(null);
+      await cargarLlaves();
+      setMessageType('success');
+      setMessage('Llave eliminada correctamente.');
+    } catch (error) {
+      setMessageType('danger');
+      setMessage(errorMessage(error));
+    } finally {
+      setEliminando(false);
+    }
+  }, [llaveAEliminar, clientApiKeysService, cargarLlaves]);
 
   const handleLlaveCreada = useCallback(
     async ({ apiKey }) => {
@@ -91,8 +116,31 @@ export function MisApiKeysPage() {
           }
           onRefresh={() => void cargarLlaves()}
           onNuevaLlave={() => setDialogLlaveOpen(true)}
+          onEliminar={solicitarEliminarLlave}
         />
       </Card>
+
+      <Dialog
+        isOpen={Boolean(llaveAEliminar)}
+        title="Eliminar API key"
+        description={
+          llaveAEliminar
+            ? `¿Seguro que deseas eliminar permanentemente «${llaveAEliminar.nombre}»? Esta acción no se puede deshacer.`
+            : ''
+        }
+        onClose={() => !eliminando && setLlaveAEliminar(null)}
+        disableBackdropClose={eliminando}
+        footer={
+          <div className="row actions-row dialog-footer-actions">
+            <Button type="button" variant="secondary" disabled={eliminando} onClick={() => setLlaveAEliminar(null)}>
+              Cancelar
+            </Button>
+            <Button type="button" variant="danger" disabled={eliminando} onClick={() => void confirmarEliminarLlave()}>
+              {eliminando ? 'Eliminando…' : 'Eliminar'}
+            </Button>
+          </div>
+        }
+      />
 
       <CrearLlaveDialog
         isOpen={dialogLlaveOpen}

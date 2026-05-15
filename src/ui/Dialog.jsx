@@ -56,7 +56,11 @@ export function Dialog({
       slotProps={{
         paper: {
           className: panelClassName,
-          sx: maxWidth === 'xl' ? { maxHeight: 'min(92vh, 900px)' } : undefined,
+          sx: {
+            display: 'flex',
+            flexDirection: 'column',
+            ...(maxWidth === 'xl' ? { maxHeight: 'min(92vh, 900px)' } : {}),
+          },
         },
       }}
       {...rest}
@@ -82,7 +86,15 @@ export function Dialog({
           </div>
         </DialogTitle>
       ) : null}
-      <DialogContent dividers={false} sx={{ overflow: 'auto', pt: title ? 1 : 3 }}>
+      <DialogContent
+        dividers={false}
+        sx={{
+          overflow: 'auto',
+          flex: '1 1 auto',
+          minHeight: 0,
+          pt: title ? 1 : 3,
+        }}
+      >
         {description ? (
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {description}

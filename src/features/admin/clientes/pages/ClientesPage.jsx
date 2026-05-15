@@ -1,24 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ApiHttpError } from '../../../../core/api/apiClient';
 import { AdminClientesTable } from '../components/AdminClientesTable';
-import { AdminLlavesTable } from '../components/AdminLlavesTable';
+import { ClienteLlavesDialog } from '../components/ClienteLlavesDialog';
 import { CrearClienteDialog } from '../components/CrearClienteDialog';
-import { CrearLlaveDialog } from '../components/CrearLlaveDialog';
 import { EditarClienteDialog } from '../components/EditarClienteDialog';
 import { useAdminClientesService } from '../services/adminClientesService';
-import { Button, Card, Feedback, SectionHeader, Select } from '../../../../shared/ui';
+import { Card, Feedback, SectionHeader } from '../../../../shared/ui';
 
 function idClienteRow(row) {
   const v = row?.publicId ?? row?.id;
   return typeof v === 'string' ? v.trim() : v != null ? String(v).trim() : '';
-}
-
-function etiquetaClienteSelect(row) {
-  const id = idClienteRow(row);
-  const titulo = [row?.nombre, row?.numeroDocumento].filter(Boolean).join(' · ');
-  if (titulo) return `${titulo}`;
-  return id || 'Cliente';
 }
 
 function resolveFeedback(error) {
@@ -32,84 +24,39 @@ function resolveFeedback(error) {
   return { variant: 'danger', message: 'Error desconocido' };
 }
 
-function llaveErrorMessage(error) {
-  if (error instanceof ApiHttpError) return `${error.message} (HTTP ${error.status})`;
-  if (error instanceof Error) return error.message;
-  return 'Error desconocido';
-}
-
 export function ClientesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const clientesService = useAdminClientesService();
 
-  const [clienteId, setClienteId] = useState('');
   const [clientes, setClientes] = useState([]);
-  const [totalClientes, setTotalClientes] = useState(null);
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
-  const [llaves, setLlaves] = useState([]);
-  const [loadingLlaves, setLoadingLlaves] = useState(false);
-  const [llavesClienteCargado, setLlavesClienteCargado] = useState(null);
-  const [dialogLlaveOpen, setDialogLlaveOpen] = useState(false);
   const [dialogClienteOpen, setDialogClienteOpen] = useState(false);
   const [clienteAEditar, setClienteAEditar] = useState(null);
+  const [clienteLlaves, setClienteLlaves] = useState(null);
+  const [dialogLlavesOpen, setDialogLlavesOpen] = useState(false);
 
   const clienteIdFromUrl = searchParams.get('clienteId') ?? '';
 
-  useEffect(() => {
-    if (clienteIdFromUrl) setClienteId(clienteIdFromUrl);
-  }, [clienteIdFromUrl]);
+  const abrirDialogLlaves = useCallback((row) => {
+    if (!row) return;
+    setClienteLlaves(row);
+    setDialogLlavesOpen(true);
+  }, []);
 
-  const fetchLlavesPorId = useCallback(
-    async (clienteRefId) => {
-      const id = String(clienteRefId ?? '').trim();
-      if (!id) {
-        setLlaves([]);
-        setLlavesClienteCargado(null);
-        return;
-      }
-      setLoadingLlaves(true);
-      try {
-        const response = await clientesService.getLlaves(id);
-        const rows = Array.isArray(response?.data) ? response.data : [];
-        setLlaves(rows);
-        setLlavesClienteCargado(id);
-      } catch (error) {
-        setLlaves([]);
-        setLlavesClienteCargado(null);
-        setFeedback({ variant: 'danger', message: llaveErrorMessage(error) });
-      } finally {
-        setLoadingLlaves(false);
-      }
-    },
-    [clientesService],
-  );
-
-  const clienteIdTrim = clienteId.trim();
-
-  const clienteNombreParaLlave = useMemo(() => {
-    if (!clienteIdTrim) return '';
-    const row = clientes.find((r) => idClienteRow(r) === clienteIdTrim);
-    if (row) return etiquetaClienteSelect(row);
-    return `${clienteIdTrim}`;
-  }, [clientes, clienteIdTrim]);
-
-  const opcionesCliente = useMemo(() => {
-    const head = [{ value: '', label: 'Selecciona un cliente' }];
-    const fromApi = clientes
-      .map((row) => {
-        const value = idClienteRow(row);
-        if (!value) return null;
-        return { value, label: etiquetaClienteSelect(row) };
-      })
-      .filter(Boolean);
-    const ids = new Set(fromApi.map((o) => o.value));
-    if (clienteIdTrim && !ids.has(clienteIdTrim)) {
-      return [...head, { value: clienteIdTrim, label: `${clienteIdTrim} (URL / no listado)` }, ...fromApi];
-    }
-    return [...head, ...fromApi];
-  }, [clientes, clienteIdTrim]);
+  const cerrarDialogLlaves = useCallback(() => {
+    setDialogLlavesOpen(false);
+    setClienteLlaves(null);
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete('clienteId');
+        return next;
+      },
+      { replace: true },
+    );
+  }, [setSearchParams]);
 
   const loadClientes = useCallback(async (options = {}) => {
     const { silent = false } = options;
@@ -118,14 +65,14 @@ export function ClientesPage() {
       const response = await clientesService.getClientes();
       const rows = Array.isArray(response?.data) ? response.data : [];
       setClientes(rows);
-      setTotalClientes(rows.length);
       if (!silent) {
         setFeedback({ variant: 'info', message: `Clientes cargados: ${rows.length}` });
       }
+      return rows;
     } catch (error) {
       setClientes([]);
-      setTotalClientes(null);
       setFeedback(resolveFeedback(error));
+      return [];
     } finally {
       setLoading(false);
     }
@@ -136,74 +83,39 @@ export function ClientesPage() {
   }, [loadClientes]);
 
   useEffect(() => {
-    if (!clienteIdTrim) {
-      setLlaves([]);
-      setLlavesClienteCargado(null);
-      return;
-    }
-    if (llavesClienteCargado && llavesClienteCargado !== clienteIdTrim) {
-      setLlaves([]);
-      setLlavesClienteCargado(null);
-    }
-  }, [clienteIdTrim, llavesClienteCargado]);
+    const id = clienteIdFromUrl.trim();
+    if (!id || clientes.length === 0) return;
+    const row = clientes.find((r) => idClienteRow(r) === id);
+    if (row) abrirDialogLlaves(row);
+  }, [clienteIdFromUrl, clientes, abrirDialogLlaves]);
 
-  const handleClienteCreado = ({ publicId }) => {
-    if (publicId) {
-      setClienteId(publicId);
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        next.set('clienteId', publicId);
-        return next;
-      });
-    }
-    setFeedback({ variant: 'success', message: publicId ? `Cliente creado: ${publicId}` : 'Cliente creado.' });
-    void loadClientes({ silent: true });
-  };
-
-  const handleClienteSelect = (e) => {
-    const next = e.target.value;
-    setClienteId(next);
-    setSearchParams((prev) => {
-      const nextParams = new URLSearchParams(prev);
-      if (next.trim()) nextParams.set('clienteId', next.trim());
-      else nextParams.delete('clienteId');
-      return nextParams;
-    });
-  };
-
-  const handleSeleccionarClienteTabla = (publicId) => {
-    const id = String(publicId ?? '').trim();
-    setClienteId(id);
-    setSearchParams((prev) => {
-      const nextParams = new URLSearchParams(prev);
-      if (id) nextParams.set('clienteId', id);
-      else nextParams.delete('clienteId');
-      return nextParams;
-    });
-  };
-
-  const toggleEstadoLlave = async (llaveId, activoActual) => {
-    if (!clienteIdTrim) return;
-    setLoadingLlaves(true);
-    try {
-      await clientesService.updateEstadoLlave(clienteIdTrim, llaveId, !activoActual);
-      setFeedback({ variant: 'success', message: `Estado actualizado: ${llaveId}` });
-      await fetchLlavesPorId(clienteIdTrim);
-    } catch (error) {
-      setFeedback({ variant: 'danger', message: llaveErrorMessage(error) });
-    } finally {
-      setLoadingLlaves(false);
-    }
-  };
-
-  const handleLlaveCreada = async ({ apiKey }) => {
+  const handleClienteCreado = async ({ publicId }) => {
     setFeedback({
       variant: 'success',
-      message: apiKey
-        ? `Llave creada. Copia la API key ahora: ${apiKey}`
-        : 'Llave creada correctamente.',
+      message: publicId ? `Cliente creado: ${publicId}` : 'Cliente creado.',
     });
-    await fetchLlavesPorId(clienteIdTrim);
+    const rows = await loadClientes({ silent: true });
+    if (publicId) {
+      const row = rows.find((r) => idClienteRow(r) === String(publicId).trim());
+      if (row) abrirDialogLlaves(row);
+    }
+  };
+
+  const handleVerLlavesCliente = (publicId) => {
+    const id = String(publicId ?? '').trim();
+    if (!id) return;
+    const row = clientes.find((r) => idClienteRow(r) === id);
+    if (row) {
+      abrirDialogLlaves(row);
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          next.set('clienteId', id);
+          return next;
+        },
+        { replace: true },
+      );
+    }
   };
 
   return (
@@ -214,72 +126,19 @@ export function ClientesPage() {
         <AdminClientesTable
           clientes={clientes}
           loading={loading}
-          selectedId={clienteIdTrim}
-          onSelectCliente={handleSeleccionarClienteTabla}
+          onVerLlaves={handleVerLlavesCliente}
           onRefresh={() => void loadClientes({ silent: true })}
           onNuevoCliente={() => setDialogClienteOpen(true)}
           onEditarCliente={(row) => setClienteAEditar(row)}
         />
       </Card>
 
-      <Card className="feature-panel">
-        <div className="row card-between" style={{ flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
-          <h3 style={{ margin: 0 }}>Cliente seleccionado</h3>
-        </div>
-        <div className="row" style={{ flexWrap: 'wrap', gap: 12, alignItems: 'flex-end' }}>
-          <div className="field-grow" style={{ flex: '1 1 220px', minWidth: 0 }}>
-            <Select
-              label="Cliente"
-              value={clienteId}
-              onChange={handleClienteSelect}
-              options={opcionesCliente}
-              disabled={loading}
-              widthVariant="full"
-            />
-          </div>
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={!clienteIdTrim || loadingLlaves}
-            onClick={() => fetchLlavesPorId(clienteIdTrim)}
-          >
-            {loadingLlaves ? 'Cargando…' : 'Cargar llaves'}
-          </Button>
-        </div>
-        <div className="quick-stats">
-          <div className="stat-chip">
-            <span>Estado</span>
-            <strong>{clienteIdTrim ? 'Listo' : 'Pendiente'}</strong>
-          </div>
-          <div className="stat-chip">
-            <span>Llaves cargadas</span>
-            <strong>
-              {clienteIdTrim && llavesClienteCargado === clienteIdTrim ? llaves.length : '-'}
-            </strong>
-          </div>
-          <div className="stat-chip">
-            <span>Total clientes</span>
-            <strong>{totalClientes ?? '-'}</strong>
-          </div>
-        </div>
-        
-      </Card>
-
-      {clienteIdTrim && (loadingLlaves || llavesClienteCargado === clienteIdTrim) ? (
-        <Card className="feature-panel llaves-panel">
-          <div className="llaves-panel-intro">
-          </div>
-          <AdminLlavesTable
-            llaves={llaves}
-            loading={loadingLlaves}
-            disabled={!clienteIdTrim}
-            listaSincronizada={Boolean(llavesClienteCargado && llavesClienteCargado === clienteIdTrim)}
-            onRefresh={() => fetchLlavesPorId(clienteIdTrim)}
-            onNuevaLlave={() => setDialogLlaveOpen(true)}
-            onToggleEstado={(llaveId, activoActual) => toggleEstadoLlave(llaveId, activoActual)}
-          />
-        </Card>
-      ) : null}
+      <ClienteLlavesDialog
+        open={dialogLlavesOpen}
+        cliente={clienteLlaves}
+        onClose={cerrarDialogLlaves}
+        onFeedback={setFeedback}
+      />
 
       <CrearClienteDialog
         isOpen={dialogClienteOpen}
@@ -295,14 +154,6 @@ export function ClientesPage() {
           setFeedback({ variant: 'success', message: 'Cliente actualizado.' });
           void loadClientes({ silent: true });
         }}
-      />
-
-      <CrearLlaveDialog
-        clienteId={clienteIdTrim}
-        clienteNombre={clienteNombreParaLlave}
-        isOpen={dialogLlaveOpen}
-        onClose={() => setDialogLlaveOpen(false)}
-        onCreated={handleLlaveCreada}
       />
 
       <Feedback

@@ -46,8 +46,12 @@ export function DataTableEmpty({ children, className = '' }) {
 }
 
 /** Área con scroll horizontal para la tabla. */
-export function DataTableScroll({ children, className = '' }) {
-  return <div className={cx('oui-dt-scroll', className)}>{children}</div>;
+export function DataTableScroll({ children, className = '', style }) {
+  return (
+    <div className={cx('oui-dt-scroll', className)} style={style}>
+      {children}
+    </div>
+  );
 }
 
 /** Tabla con estilos Orion UI. */

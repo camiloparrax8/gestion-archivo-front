@@ -1,5 +1,6 @@
+import { alpha } from '@mui/material/styles';
 import { Box, Chip, IconButton } from '@mui/material';
-import { ToggleOffOutlined, ToggleOnOutlined } from '@mui/icons-material';
+import { DeleteOutlined, ToggleOffOutlined, ToggleOnOutlined } from '@mui/icons-material';
 import {
   DataTableEmpty,
   DataTableRoot,
@@ -40,8 +41,12 @@ export function AdminLlavesTable({
   onRefresh,
   onNuevaLlave,
   onToggleEstado,
+  onEliminar,
+  tableScrollable = false,
 }) {
-  const muestraColumnaAcciones = !soloLectura;
+  const muestraToggle = Boolean(onToggleEstado) && !soloLectura;
+  const muestraEliminar = Boolean(onEliminar);
+  const muestraColumnaAcciones = muestraToggle || muestraEliminar;
   const colCount = muestraColumnaAcciones ? 4 : 3;
   const muestraBotonNuevaLlave = Boolean(onNuevaLlave) && (!soloLectura || permitirNuevaLlave);
 
@@ -49,7 +54,7 @@ export function AdminLlavesTable({
     <>
       <button
         type="button"
-        className="icon-btn icon-btn--ghost"
+        className="icon-btn icon-btn--ghost icon-btn--accent"
         disabled={disabled || loading}
         onClick={onRefresh}
         aria-label="Actualizar lista"
@@ -74,7 +79,7 @@ export function AdminLlavesTable({
 
   return (
     <DataTableRoot refreshing={loading && llaves.length > 0}>
-      <DataTableToolbar title="API keys" actions={toolbarActions} />
+      <DataTableToolbar  actions={toolbarActions} />
 
       {llaves.length === 0 && !loading && !listaSincronizada ? (
         <DataTableEmpty>
@@ -98,7 +103,7 @@ export function AdminLlavesTable({
       ) : null}
 
       {llaves.length > 0 || loading ? (
-        <DataTableScroll>
+        <DataTableScroll className={tableScrollable ? 'oui-dt-scroll--body' : undefined}>
           <DataTableTable>
             <thead>
               <tr>
@@ -137,17 +142,57 @@ export function AdminLlavesTable({
                       {muestraColumnaAcciones ? (
                         <td className="oui-dt-actions">
                           <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 0.25 }}>
-                          <IconButton
-                            size="small"
-                            color={activo ? 'warning' : 'success'}
-                            disabled={disabled || loading || !id}
-                            onClick={() => onToggleEstado?.(id, activo)}
-                            aria-label={activo ? 'Desactivar llave' : 'Activar llave'}
-                            title={activo ? 'Desactivar' : 'Activar'}
-                          >
-                            {activo ? <ToggleOffOutlined fontSize="small" /> : <ToggleOnOutlined fontSize="small" />}
-                          </IconButton>
-                        </Box>
+                            {muestraToggle ? (
+                              <IconButton
+                                size="small"
+                                disabled={disabled || loading || !id}
+                                onClick={() => onToggleEstado(id, activo)}
+                                aria-label={activo ? 'Desactivar llave' : 'Activar llave'}
+                                title={activo ? 'Desactivar' : 'Activar'}
+                                sx={(theme) =>
+                                  activo
+                                    ? {
+                                        color: theme.palette.warning.main,
+                                        backgroundColor: alpha(theme.palette.warning.main, 0.12),
+                                        '&:hover': {
+                                          backgroundColor: alpha(theme.palette.warning.main, 0.22),
+                                        },
+                                      }
+                                    : {
+                                        color: theme.palette.success.main,
+                                        backgroundColor: alpha(theme.palette.success.main, 0.12),
+                                        '&:hover': {
+                                          backgroundColor: alpha(theme.palette.success.main, 0.22),
+                                        },
+                                      }
+                                }
+                              >
+                                {activo ? (
+                                  <ToggleOffOutlined fontSize="small" />
+                                ) : (
+                                  <ToggleOnOutlined fontSize="small" />
+                                )}
+                              </IconButton>
+                            ) : null}
+                            {muestraEliminar ? (
+                              <IconButton
+                                size="small"
+                                disabled={disabled || loading || !id}
+                                onClick={() => onEliminar(id)}
+                                aria-label="Eliminar llave"
+                                title="Eliminar"
+                                sx={(theme) => ({
+                                  color: theme.palette.error.main,
+                                  backgroundColor: alpha(theme.palette.error.main, 0.12),
+                                  '&:hover': {
+                                    backgroundColor: alpha(theme.palette.error.main, 0.22),
+                                  },
+                                })}
+                              >
+                                <DeleteOutlined fontSize="small" />
+                              </IconButton>
+                            ) : null}
+                          </Box>
                       </td>
                     ) : null}
                   </tr>
