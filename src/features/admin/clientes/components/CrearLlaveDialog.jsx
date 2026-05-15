@@ -100,10 +100,10 @@ export function CrearLlaveDialog({
     <Dialog
       isOpen={isOpen}
       title="Nueva API key"
-      description={description}
       onClose={handleClose}
       size="xl"
       disableBackdropClose={loading}
+      
       footer={
         <div className="row actions-row dialog-footer-actions">
           <Button type="button" variant="secondary" disabled={loading} onClick={handleClose}>

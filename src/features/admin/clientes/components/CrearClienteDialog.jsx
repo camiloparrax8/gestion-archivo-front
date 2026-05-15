@@ -83,7 +83,7 @@ export function CrearClienteDialog({ isOpen = false, onClose, onCreated }) {
     <Dialog
       isOpen={isOpen}
       title="Nuevo cliente"
-      description="Completa los datos del cliente. Al guardar se seleccionará el cliente creado."
+      description="Completa los datos del cliente. Al guardar se abrirán sus API keys."
       onClose={handleClose}
       size="xl"
       disableBackdropClose={loading}

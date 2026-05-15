@@ -38,6 +38,10 @@ export function useAdminClientesService() {
             method: 'POST',
             token,
         });
+        const deleteLlave = async (clienteId, llaveId) => apiRequest(
+            `${base}/${encodeURIComponent(String(clienteId).trim())}/llaves/${encodeURIComponent(String(llaveId).trim())}`,
+            { method: 'DELETE', token },
+        );
         return {
             getClientes,
             createCliente,
@@ -46,6 +50,7 @@ export function useAdminClientesService() {
             getLlaves,
             updateEstadoLlave,
             rotarLlave,
+            deleteLlave,
         };
     }, [token]);
 }

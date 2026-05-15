@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useId, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Autocomplete,
@@ -41,6 +41,7 @@ const Select = ({
 }) => {
   const justSelectedRef = useRef(false);
   const selectionTimeoutRef = useRef(null);
+  const selectLabelId = useId();
 
   const selectedOptions = useMemo(() => {
     if (!multiple) return null;
@@ -169,12 +170,13 @@ const Select = ({
               helperText={helperText}
               placeholder={placeholder}
               size={size}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'white',
-                },
-                ...sx,
+              InputLabelProps={{
+                ...params.InputLabelProps,
+                shrink:
+                  params.InputLabelProps?.shrink ??
+                  (Boolean(placeholder) || (selectedOptions?.length ?? 0) > 0),
               }}
+              sx={sx}
             />
           )}
           {...props}
@@ -192,9 +194,6 @@ const Select = ({
       size={size}
       sx={{
         width: currentWidth,
-        '& .MuiOutlinedInput-root': {
-          backgroundColor: 'white',
-        },
         ...sx,
       }}
     >
@@ -233,14 +232,14 @@ const Select = ({
               error={error}
               helperText={helperText}
               placeholder={placeholder}
-              InputLabelProps={{ shrink: true }}
-              onKeyDown={handleTextFieldKeyDown}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'white',
-                },
-                ...sx,
+              InputLabelProps={{
+                ...params.InputLabelProps,
+                shrink:
+                  params.InputLabelProps?.shrink ??
+                  (Boolean(placeholder) || (value !== '' && value != null)),
               }}
+              onKeyDown={handleTextFieldKeyDown}
+              sx={sx}
             />
           )}
           disabled={disabled}
@@ -248,18 +247,38 @@ const Select = ({
         />
       ) : (
         <>
-          <InputLabel>{label}</InputLabel>
+          {label ? (
+            <InputLabel id={selectLabelId} htmlFor={selectLabelId} shrink>
+              {label}
+            </InputLabel>
+          ) : null}
           <MuiSelect
+            id={selectLabelId}
+            labelId={selectLabelId}
             displayEmpty
-            value={value}
+            value={value ?? ''}
             onChange={onChange}
             label={label}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: 'white',
-              },
-              ...sx,
+            renderValue={(selected) => {
+              const option = options.find((opt) => opt.value === selected);
+              const text = option?.label ?? (selected != null ? String(selected) : '');
+              const isPlaceholder = selected === '' || selected == null;
+              return (
+                <Box
+                  component="span"
+                  sx={{
+                    display: 'block',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    color: isPlaceholder ? 'text.secondary' : 'text.primary',
+                  }}
+                >
+                  {text}
+                </Box>
+              );
             }}
+            sx={sx}
             MenuProps={{
               disablePortal: false,
               PaperProps: {

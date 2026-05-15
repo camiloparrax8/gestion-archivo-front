@@ -147,10 +147,6 @@ export function LoginPage() {
         >
           Iniciar sesión
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Accede con tu cuenta de administrador o cliente.
-        </Typography>
-
         <Box
           component="form"
           onSubmit={onSubmit}

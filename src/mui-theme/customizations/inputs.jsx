@@ -55,29 +55,27 @@ export const inputsCustomizations = {
               variant: 'contained',
             },
             style: {
-              color: '#fafeff',
-              backgroundColor: 'var(--color-deep-cosmos)',
-              backgroundImage:
-                'linear-gradient(180deg, var(--color-hero-gradient) 0%, var(--color-deep-cosmos) 100%)',
-              border: '1px solid color-mix(in srgb, var(--color-hero-gradient) 68%, var(--color-deep-cosmos) 32%)',
-              boxShadow:
-                'inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 1px 0 rgba(0, 16, 51, 0.12)',
+              color: '#ffffff',
+              backgroundColor: 'var(--color-hero-gradient)',
+              backgroundImage: 'none',
+              border: '1px solid color-mix(in srgb, var(--color-hero-gradient) 82%, var(--color-accent-pulse) 18%)',
+              boxShadow: '0 1px 2px color-mix(in srgb, var(--color-hero-gradient) 22%, transparent)',
               '&:hover': {
-                backgroundImage:
-                  'linear-gradient(180deg, color-mix(in srgb, var(--color-hero-gradient) 88%, #fff 12%) 0%, color-mix(in srgb, var(--color-deep-cosmos) 85%, var(--color-hero-gradient) 15%) 100%)',
-                boxShadow:
-                  'inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 12px 28px color-mix(in srgb, var(--color-hero-gradient) 42%, transparent)',
+                backgroundColor: 'color-mix(in srgb, var(--color-hero-gradient) 86%, var(--color-accent-pulse) 14%)',
+                backgroundImage: 'none',
+                boxShadow: '0 8px 20px color-mix(in srgb, var(--color-hero-gradient) 26%, transparent)',
               },
               '&:active': {
                 backgroundImage: 'none',
-                backgroundColor: 'var(--color-deep-cosmos)',
-                boxShadow: 'inset 0 2px 6px rgba(0, 24, 66, 0.45)',
+                backgroundColor: 'color-mix(in srgb, var(--color-hero-gradient) 78%, var(--color-deep-cosmos) 22%)',
+                boxShadow: '0 1px 2px color-mix(in srgb, var(--color-deep-cosmos) 18%, transparent)',
               },
               ...theme.applyStyles('dark', {
-                color: '#fafeff',
+                color: '#ffffff',
+                backgroundColor: 'var(--color-hero-gradient)',
                 '&:hover': {
-                  backgroundImage:
-                    'linear-gradient(180deg, color-mix(in srgb, var(--color-hero-gradient) 75%, #0b1220 25%) 0%, var(--color-deep-cosmos) 100%)',
+                  backgroundColor: 'color-mix(in srgb, var(--color-hero-gradient) 80%, var(--color-accent-pulse) 20%)',
+                  backgroundImage: 'none',
                 },
               }),
             },
@@ -364,12 +362,18 @@ export const inputsCustomizations = {
       root: {
         border: 'none',
       },
-      input: {
+      input: ({ theme }) => ({
         '&::placeholder': {
-          opacity: 0.7,
+          opacity: 0.85,
           color: gray[500],
         },
-      },
+        ...theme.applyStyles('dark', {
+          '&::placeholder': {
+            opacity: 1,
+            color: gray[400],
+          },
+        }),
+      }),
     },
   },
   MuiOutlinedInput: {
@@ -382,8 +386,8 @@ export const inputsCustomizations = {
         color: (theme.vars || theme).palette.text.primary,
         borderRadius: (theme.vars || theme).shape.borderRadius,
         border: `1px solid ${(theme.vars || theme).palette.divider}`,
-        backgroundColor: (theme.vars || theme).palette.background.default,
-        transition: 'border 120ms ease-in',
+        backgroundColor: (theme.vars || theme).palette.common.white,
+        transition: 'border 120ms ease-in, background-color 120ms ease-in',
         '&:hover': {
           borderColor: gray[400],
         },
@@ -392,8 +396,14 @@ export const inputsCustomizations = {
           borderColor: brand[400],
         },
         ...theme.applyStyles('dark', {
+          backgroundColor: 'hsl(220, 24%, 16%)',
+          borderColor: gray[700],
           '&:hover': {
-            borderColor: gray[500],
+            borderColor: gray[600],
+          },
+          [`&.${outlinedInputClasses.focused}`]: {
+            outline: `3px solid ${alpha(brand[400], 0.35)}`,
+            borderColor: brand[400],
           },
         }),
         variants: [
@@ -434,8 +444,37 @@ export const inputsCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         typography: theme.typography.caption,
-        marginBottom: 8,
+        '&:not(.MuiInputLabel-root)': {
+          marginBottom: 8,
+        },
       }),
+    },
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        marginBottom: 0,
+        ...theme.applyStyles('dark', {
+          color: gray[400],
+          '&.Mui-focused': {
+            color: brand[300],
+          },
+        }),
+      }),
+      outlined: {
+        '&.MuiInputLabel-sizeSmall': {
+          transform: 'translate(12px, 8px) scale(1)',
+        },
+        '&.MuiInputLabel-sizeSmall.MuiInputLabel-shrink': {
+          transform: 'translate(12px, -7px) scale(0.75)',
+        },
+        '&.MuiInputLabel-sizeMedium': {
+          transform: 'translate(12px, 10px) scale(1)',
+        },
+        '&.MuiInputLabel-sizeMedium.MuiInputLabel-shrink': {
+          transform: 'translate(12px, -9px) scale(0.75)',
+        },
+      },
     },
   },
 };
