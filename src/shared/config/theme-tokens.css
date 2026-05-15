@@ -1,0 +1,62 @@
+/**
+ * Puente de tokens: misma semántica que front-orion-marketplace + escala compartida.
+ * Depende de `variables.css` (--color-*, --surface-*, etc.).
+ */
+:root {
+  /* Semántica (alias Orion azul) */
+  --token-primary: var(--color-deep-cosmos);
+  --token-secondary: var(--color-hero-gradient);
+  --token-accent: var(--color-blue-glow-radial);
+  --token-surface: var(--surface-pure-surface);
+  --token-background: var(--surface-ghost-canvas);
+  --token-muted: var(--color-slate-ink);
+  --token-danger: #dc2626;
+  --token-success: #0284c7;
+
+  /* Escala de espacio (front-orion spacing.js) + compat con --spacing-* existentes */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 64px;
+  --space-xxxl: 128px;
+
+  --spacing-64: 64px;
+  --spacing-128: 128px;
+
+  /* Radios (front-orion radius.js) — tokens genéricos */
+  --radius-token-sm: 4px;
+  --radius-token-md: 8px;
+  --radius-token-lg: 16px;
+  --radius-token-xl: 24px;
+  --radius-token-xxl: 32px;
+
+  /* Sombras genéricas (front-orion shadow.js, tinte azul) */
+  --shadow-token-sm: 0 1px 2px 0 rgba(0, 16, 51, 0.06);
+  --shadow-token-md: 0 4px 6px -1px rgba(0, 16, 51, 0.1);
+  --shadow-token-lg: 0 10px 15px -3px rgba(0, 16, 51, 0.1);
+  --shadow-token-xl: 0 20px 25px -5px rgba(0, 16, 51, 0.12);
+  --shadow-token-xxl: 0 25px 50px -12px rgba(0, 16, 51, 0.18);
+
+  /* Tipografía utilitaria (front-orion typography.js) — opcional junto a --font-abcdfont */
+  --font-theme-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --font-theme-serif: Merriweather, Georgia, serif;
+  --font-theme-mono: "Roboto Mono", ui-monospace, monospace;
+
+  --text-theme-xs: 0.75rem;
+  --text-theme-sm: 0.875rem;
+  --text-theme-md: 1rem;
+  --text-theme-lg: 1.125rem;
+  --text-theme-xl: 1.25rem;
+  --text-theme-2xl: 1.5rem;
+  --text-theme-3xl: 2rem;
+
+  /* Duración / easing (animation.js) */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
