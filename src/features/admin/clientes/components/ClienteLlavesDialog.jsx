@@ -100,8 +100,9 @@ export function ClienteLlavesDialog({ open = false, cliente = null, onClose, onF
     onFeedback?.({
       variant: 'success',
       message: apiKey
-        ? `Llave creada. Copia la API key ahora: ${apiKey}`
+        ? 'Llave creada. Guárdala ahora; solo se muestra una vez.'
         : 'Llave creada correctamente.',
+      copyText: apiKey || undefined,
     });
     await loadLlaves();
   };
@@ -112,7 +113,7 @@ export function ClienteLlavesDialog({ open = false, cliente = null, onClose, onF
         open={open}
         onClose={onClose}
         title="API keys"
-        size="xl"
+        size="apiKeys"
         fullWidth
       >
         <AdminLlavesTable
