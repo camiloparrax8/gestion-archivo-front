@@ -134,6 +134,49 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+.form-grid > * {
+  min-width: 0;
+}
+
+.dialog-panel--form .MuiDialogContent-root {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.dialog-form {
+  width: fit-content;
+  max-width: 100%;
+  padding-block: 10px 12px;
+  overflow: visible;
+}
+
+.form-grid--dialog {
+  grid-template-columns: repeat(2, minmax(0, var(--oui-form-field-max, 260px)));
+  gap: 20px;
+  row-gap: 24px;
+  width: fit-content;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.form-grid--dialog > :nth-child(5),
+.form-grid--dialog > .dialog-form__meta {
+  grid-column: 1 / -1;
+}
+
+.dialog-form__meta {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 4px;
+}
+
+@media (max-width: 540px) {
+  .form-grid--dialog {
+    grid-template-columns: 1fr;
+  }
+
+}
+
 .row {
   display: flex;
   gap: 8px;
@@ -718,10 +761,81 @@ pre {
   max-height: min(94vh, 920px);
 }
 
+.dialog-panel--api-keys {
+  max-width: min(94vw, 680px);
+  max-height: min(88vh, 620px);
+}
+
+.dialog-panel--api-keys .MuiDialogTitle-root {
+  padding-bottom: 8px;
+}
+
+.dialog-panel--api-keys .MuiDialogContent-root {
+  padding-top: 8px;
+  padding-bottom: 12px;
+}
+
+.dialog-panel--api-keys .oui-dt-scroll.oui-dt-scroll--body {
+  max-height: min(38vh, 280px);
+}
+
+.dialog-panel--multimedia {
+  max-width: min(96vw, 600px);
+}
+
+.dialog-panel--multimedia .MuiDialogContent-root {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.dialog-panel--multimedia .MuiDialogActions-root {
+  padding-top: 8px;
+}
+
 .multimedia-dialog-stack {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
+  width: 100%;
+}
+
+.multimedia-consulta-panel {
+  width: 100%;
+  align-self: stretch;
+  padding: var(--spacing-12);
+  gap: var(--spacing-8);
+}
+
+.multimedia-consulta-panel h3 {
+  margin: 0 0 4px;
+}
+
+.multimedia-consulta-form.dialog-form {
+  width: 100%;
+}
+
+.multimedia-consulta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.multimedia-consulta-form .form-grid--dialog {
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  row-gap: 12px;
+}
+
+.multimedia-consulta-actions {
+  justify-content: flex-start;
+  margin: 0;
+  padding-top: 2px;
+}
+
+.form-grid--single {
+  grid-template-columns: 1fr;
 }
 
 .multimedia-dialog-stack .soft-panel {

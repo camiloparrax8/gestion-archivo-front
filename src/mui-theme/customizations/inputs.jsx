@@ -384,7 +384,7 @@ export const inputsCustomizations = {
       root: ({ theme }) => ({
         padding: '8px 12px',
         color: (theme.vars || theme).palette.text.primary,
-        borderRadius: (theme.vars || theme).shape.borderRadius,
+        borderRadius: 10,
         border: `1px solid ${(theme.vars || theme).palette.divider}`,
         backgroundColor: (theme.vars || theme).palette.common.white,
         transition: 'border 120ms ease-in, background-color 120ms ease-in',
@@ -462,17 +462,18 @@ export const inputsCustomizations = {
         }),
       }),
       outlined: {
+        lineHeight: 1.4,
         '&.MuiInputLabel-sizeSmall': {
-          transform: 'translate(12px, 8px) scale(1)',
+          transform: 'translate(14px, 10px) scale(1)',
         },
         '&.MuiInputLabel-sizeSmall.MuiInputLabel-shrink': {
-          transform: 'translate(12px, -7px) scale(0.75)',
+          transform: 'translate(14px, -4px) scale(0.75)',
         },
         '&.MuiInputLabel-sizeMedium': {
-          transform: 'translate(12px, 10px) scale(1)',
+          transform: 'translate(14px, 12px) scale(1)',
         },
         '&.MuiInputLabel-sizeMedium.MuiInputLabel-shrink': {
-          transform: 'translate(12px, -9px) scale(0.75)',
+          transform: 'translate(14px, -5px) scale(0.75)',
         },
       },
     },
