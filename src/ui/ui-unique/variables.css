@@ -84,7 +84,9 @@
   /* Named Radii */
   --radius-cards: 20px;
   --radius-badges: 16px;
-  --radius-inputs: 0px;
+  --radius-inputs: 10px;
+  --oui-form-field-max: 260px;
+  --oui-form-field-max-wide: 300px;
   --radius-buttons: 9999px;
   --radius-pilllarge: 60px;
   --radius-cardssmall: 6px;
