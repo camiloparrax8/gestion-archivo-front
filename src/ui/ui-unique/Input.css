@@ -1,0 +1,17 @@
+/* Orion UI — Input (extiende form-fields.css) */
+
+.oui-input {
+  width: var(--oui-input-width, 100%);
+  font-family: var(--font-abcdfont);
+}
+
+.oui-input .MuiOutlinedInput-input {
+  padding: 0;
+}
+
+.oui-input--long .MuiOutlinedInput-root textarea {
+  resize: horizontal;
+  min-height: 24px;
+  max-height: 96px;
+  min-width: 400px;
+}

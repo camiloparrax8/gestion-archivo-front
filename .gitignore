@@ -15,8 +15,6 @@
 # Go workspace file
 go.work.sum
 
-# env file
-.env
 
 ### Node
 # Dependencies
@@ -115,3 +113,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.env

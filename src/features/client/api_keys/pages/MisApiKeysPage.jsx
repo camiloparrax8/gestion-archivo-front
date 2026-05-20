@@ -24,6 +24,7 @@ export function MisApiKeysPage() {
   const [cargaInicialLista, setCargaInicialLista] = useState(false);
   const [cargaFallida, setCargaFallida] = useState(false);
   const [message, setMessage] = useState('');
+  const [copyText, setCopyText] = useState('');
   const [messageType, setMessageType] = useState('info');
   const [dialogLlaveOpen, setDialogLlaveOpen] = useState(false);
   const [llaveAEliminar, setLlaveAEliminar] = useState(null);
@@ -32,6 +33,7 @@ export function MisApiKeysPage() {
   const cargarLlaves = useCallback(async () => {
     setLoading(true);
     setMessage('');
+    setCopyText('');
     setCargaFallida(false);
     try {
       const response = await clientApiKeysService.getMisLlaves();
@@ -68,6 +70,7 @@ export function MisApiKeysPage() {
       await cargarLlaves();
       setMessageType('success');
       setMessage('Llave eliminada correctamente.');
+      setCopyText('');
     } catch (error) {
       setMessageType('danger');
       setMessage(errorMessage(error));
@@ -82,9 +85,10 @@ export function MisApiKeysPage() {
       setMessageType('success');
       setMessage(
         apiKey
-          ? `Llave creada. Copia la API key ahora: ${apiKey}`
+          ? 'Llave creada. Guárdala ahora; solo se muestra una vez.'
           : 'Llave creada correctamente.',
       );
+      setCopyText(apiKey || '');
     },
     [cargarLlaves],
   );
@@ -153,12 +157,16 @@ export function MisApiKeysPage() {
       {message ? (
         <Feedback
           open={Boolean(message)}
-          onClose={() => setMessage('')}
+          onClose={() => {
+            setMessage('');
+            setCopyText('');
+          }}
           message={message}
+          copyText={copyText || undefined}
           variant={messageType}
           title="Mis API Keys"
           position="bottom-right"
-          autoHideDuration={messageType === 'danger' ? 8000 : 5000}
+          autoHideDuration={copyText ? 12000 : messageType === 'danger' ? 8000 : 5000}
         />
       ) : null}
     </Card>

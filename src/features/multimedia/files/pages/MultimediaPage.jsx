@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ApiHttpError } from '../../../../core/api/apiClient';
 import { useAdminClientesService } from '../../../admin/clientes/services/adminClientesService';
 import { useAuth } from '../../../../shared/auth/useAuth';
-import { Button, Card, Dialog, Feedback, Input, SectionHeader, Select } from '../../../../shared/ui';
+import { Button, Card, CopyIconButton, Dialog, Feedback, Input, SectionHeader, Select } from '../../../../shared/ui';
 import { MultimediaFilesTable } from '../components/MultimediaFilesTable';
 import { ENTIDAD_MULTIMEDIA_SEGMENTO, useMultimediaService } from '../services/multimediaService';
 
@@ -229,7 +229,7 @@ export function MultimediaPage() {
         title="Multimedia"
         onClose={cerrarPanel}
         disableBackdropClose={busy}
-        size="xl"
+        size="multimedia"
         footer={
           <div className="row actions-row dialog-footer-actions">
             <Button type="button" variant="secondary" disabled={busy} onClick={cerrarPanel}>
@@ -239,39 +239,43 @@ export function MultimediaPage() {
         }
       >
         <div className="multimedia-dialog-stack">
-          <Card className="feature-panel">
+          <Card className="feature-panel multimedia-consulta-panel">
             <h3>Consulta</h3>
-            <Input
-              label="Llave"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              placeholder="pk_xxx..."
-              widthVariant="full"
-              
-            />
-            <div className="form-grid">
+            <div className="multimedia-consulta-form dialog-form">
               <Input
-                label="Contexto"
-                value={contexto}
-                onChange={(e) => setContexto(e.target.value)}
-                placeholder="orion"
+                label="Llave"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="pk_xxx..."
                 widthVariant="full"
+                endAdornment={<CopyIconButton text={apiKey} disabled={busy} label="Copiar llave" />}
               />
-              {!isCliente ? (
-                <Select
-                  label="Usuario"
-                  value={entidadId}
-                  onChange={(e) => setEntidadId(e.target.value)}
-                  disabled={busy || loadingClientes}
-                  options={opcionesUsuarioCliente}
+              <div
+                className={`form-grid form-grid--dialog${isCliente ? ' form-grid--single' : ''}`}
+              >
+                <Input
+                  label="Contexto"
+                  value={contexto}
+                  onChange={(e) => setContexto(e.target.value)}
+                  placeholder="orion"
                   widthVariant="full"
                 />
-              ) : null}
-            </div>
-            <div className="row actions-row">
-              <Button disabled={busy || !puedeOperar} type="button" onClick={listar}>
-                Listar activos
-              </Button>
+                {!isCliente ? (
+                  <Select
+                    label="Usuario"
+                    value={entidadId}
+                    onChange={(e) => setEntidadId(e.target.value)}
+                    disabled={busy || loadingClientes}
+                    options={opcionesUsuarioCliente}
+                    widthVariant="full"
+                  />
+                ) : null}
+              </div>
+              <div className="row actions-row multimedia-consulta-actions">
+                <Button disabled={busy || !puedeOperar} type="button" onClick={listar}>
+                  Listar activos
+                </Button>
+              </div>
             </div>
           </Card>
 

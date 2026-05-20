@@ -26,6 +26,15 @@ function nombreArchivo(fila) {
   return fila?.nombre ?? fila?.nombreArchivo ?? '';
 }
 
+function nombreOriginal(fila) {
+  const valor =
+    fila?.nombreOriginal ??
+    fila?.nombre_original ??
+    fila?.originalName ??
+    fila?.originalFilename;
+  return typeof valor === 'string' && valor.trim() ? valor.trim() : '—';
+}
+
 export function MultimediaFilesTable({ archivos = [], loading = false, disabled = false, onDelete, onRefresh }) {
   const refreshBtn = (
     <button
@@ -68,7 +77,7 @@ export function MultimediaFilesTable({ archivos = [], loading = false, disabled 
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Ubicación</th>
+              <th>Nombre original</th>
               <th>Acceso</th>
               <th className="oui-dt-actions">Acciones</th>
             </tr>
@@ -84,14 +93,13 @@ export function MultimediaFilesTable({ archivos = [], loading = false, disabled 
               archivos.map((fila, idx) => {
                 const nombre = nombreArchivo(fila);
                 const key = fila?.rutaInternaCliente || fila?.rutaRelativa || `${nombre}-${idx}`;
-                const ubicacion = [fila?.subcarpeta, fila?.rutaRelativa].filter(Boolean).join(' · ') || '—';
                 const url = fila?.url;
                 return (
                   <tr key={key}>
                     <td>
                       <code className="oui-dt-code">{nombre || '—'}</code>
                     </td>
-                    <td className="oui-dt-muted">{ubicacion}</td>
+                    <td className="oui-dt-muted">{nombreOriginal(fila)}</td>
                     <td>
                       {url ? (
                         <a className="oui-dt-link" href={url} target="_blank" rel="noreferrer">

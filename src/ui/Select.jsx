@@ -1,5 +1,6 @@
 import { useId, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
+import './ui-unique/form-fields.css';
 import {
   Autocomplete,
   Box,
@@ -69,6 +70,11 @@ const Select = ({
   };
 
   const currentWidth = getWidth();
+  const hasEmptyOption = options.some((opt) => opt.value === '' || opt.value == null);
+  const shouldShrinkLabel =
+    (value !== '' && value != null && value !== undefined) ||
+    Boolean(placeholder) ||
+    hasEmptyOption;
 
   const handleSingleChange = (event, newValue) => {
     if (autocomplete) {
@@ -125,7 +131,7 @@ const Select = ({
 
   if (multiple) {
     return (
-      <Box sx={{ width: currentWidth }}>
+      <Box className="oui-field oui-select" sx={{ width: currentWidth }}>
         <Autocomplete
           multiple
           disableCloseOnSelect
@@ -164,6 +170,7 @@ const Select = ({
           renderInput={(params) => (
             <TextField
               {...params}
+              className="oui-field oui-input"
               label={label}
               required={required}
               error={error}
@@ -187,6 +194,7 @@ const Select = ({
 
   return (
     <FormControl
+      className="oui-field oui-select"
       fullWidth={fullWidth}
       required={required}
       disabled={disabled}
@@ -228,6 +236,7 @@ const Select = ({
           renderInput={(params) => (
             <TextField
               {...params}
+              className="oui-field oui-input"
               label={label}
               error={error}
               helperText={helperText}
@@ -248,7 +257,7 @@ const Select = ({
       ) : (
         <>
           {label ? (
-            <InputLabel id={selectLabelId} htmlFor={selectLabelId} shrink>
+            <InputLabel id={selectLabelId} htmlFor={selectLabelId} shrink={shouldShrinkLabel}>
               {label}
             </InputLabel>
           ) : null}

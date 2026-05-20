@@ -13,12 +13,16 @@ const SIZE_TO_MAX_WIDTH = {
   default: 'sm',
   wide: 'md',
   xl: 'xl',
+  form: false,
+  multimedia: 'md',
+  apiKeys: 'md',
 };
 
-/**
- * Diálogo con MUI. Compatibilidad con la API anterior:
- * `isOpen` → `open`, `footer` → `actions`, `size` → `maxWidth`, `description` en el contenido.
- */
+function cx(...parts) {
+  return parts.filter(Boolean).join(' ');
+}
+
+
 export function Dialog({
   open: openProp,
   isOpen,
@@ -38,7 +42,12 @@ export function Dialog({
 }) {
   const open = openProp ?? Boolean(isOpen);
   const actions = actionsProp ?? footer;
-  const maxWidth = maxWidthProp ?? SIZE_TO_MAX_WIDTH[size] ?? SIZE_TO_MAX_WIDTH.default;
+  const isFormLayout = size === 'form';
+  const isMultimediaLayout = size === 'multimedia';
+  const isApiKeysLayout = size === 'apiKeys';
+  const isCompactContent = isFormLayout || isMultimediaLayout || isApiKeysLayout;
+  const maxWidth =
+    maxWidthProp ?? SIZE_TO_MAX_WIDTH[size] ?? SIZE_TO_MAX_WIDTH.default;
 
   const handleClose = (event, reason) => {
     if (disableBackdropClose && reason === 'backdropClick') {
@@ -51,15 +60,29 @@ export function Dialog({
     <MuiDialog
       open={open}
       onClose={handleClose}
-      maxWidth={maxWidth}
-      fullWidth={fullWidth}
+      maxWidth={isFormLayout ? false : maxWidth}
+      fullWidth={isFormLayout ? false : fullWidth}
       slotProps={{
         paper: {
-          className: panelClassName,
+          className: cx(
+            panelClassName,
+            isFormLayout && 'dialog-panel--form',
+            isMultimediaLayout && 'dialog-panel--multimedia',
+            isApiKeysLayout && 'dialog-panel--api-keys',
+          ),
           sx: {
             display: 'flex',
             flexDirection: 'column',
+            ...(isFormLayout
+              ? {
+                  width: 'fit-content',
+                  maxWidth:
+                    'min(calc(2 * var(--oui-form-field-max, 260px) + var(--spacing-20, 20px) + 56px), 96vw)',
+                }
+              : {}),
             ...(maxWidth === 'xl' ? { maxHeight: 'min(92vh, 900px)' } : {}),
+            ...(isMultimediaLayout ? { maxHeight: 'min(92vh, 880px)' } : {}),
+            ...(isApiKeysLayout ? { maxHeight: 'min(88vh, 620px)' } : {}),
           },
         },
       }}
@@ -90,7 +113,7 @@ export function Dialog({
         dividers={false}
         sx={{
           overflow: 'auto',
-          flex: '1 1 auto',
+          flex: isCompactContent ? '0 1 auto' : '1 1 auto',
           minHeight: 0,
           pt: title ? 1 : 3,
         }}
@@ -117,7 +140,7 @@ Dialog.propTypes = {
   actions: PropTypes.node,
   footer: PropTypes.node,
   maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl', false]),
-  size: PropTypes.oneOf(['default', 'wide', 'xl']),
+  size: PropTypes.oneOf(['default', 'wide', 'xl', 'form', 'multimedia', 'apiKeys']),
   fullWidth: PropTypes.bool,
   showCloseButton: PropTypes.bool,
   disableBackdropClose: PropTypes.bool,

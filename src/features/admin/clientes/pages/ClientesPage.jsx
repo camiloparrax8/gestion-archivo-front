@@ -160,10 +160,11 @@ export function ClientesPage() {
         open={Boolean(feedback)}
         onClose={() => setFeedback(null)}
         message={feedback?.message || ''}
+        copyText={feedback?.copyText}
         variant={feedback?.variant || 'info'}
         title="Clientes"
         position="bottom-right"
-        autoHideDuration={5000}
+        autoHideDuration={feedback?.copyText ? 12000 : 5000}
       />
     </Card>
   );

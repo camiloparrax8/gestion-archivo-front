@@ -1,0 +1,94 @@
+.oui-field.MuiFormControl-root,
+.oui-field.MuiTextField-root {
+  overflow: visible;
+  margin-top: 2px;
+  padding-top: 6px;
+}
+
+.multimedia-consulta-form .oui-field.MuiTextField-root,
+.multimedia-consulta-form .oui-field.MuiFormControl-root {
+  padding-top: 4px;
+  margin-top: 0;
+}
+
+.oui-field .MuiOutlinedInput-root {
+  border-radius: var(--radius-inputs, 10px);
+  overflow: visible;
+  color: var(--color-midnight-navy);
+  background-color: var(--color-pure-surface, #fff);
+}
+
+.oui-field .MuiOutlinedInput-input,
+.oui-field .MuiSelect-select {
+  font-family: var(--font-abcdfont);
+  font-size: var(--text-body, 16px);
+  letter-spacing: var(--tracking-body, -0.16px);
+  line-height: var(--leading-body, 1.5);
+}
+
+.oui-field .MuiFormHelperText-root {
+  margin-left: 0;
+  margin-right: 0;
+  font-size: var(--text-caption, 13px);
+  color: var(--color-slate-ink);
+}
+
+/* Etiqueta alineada a la izquierda, sin cruce con el borde */
+.oui-field .MuiInputLabel-outlined {
+  left: 14px;
+  right: auto;
+  transform-origin: top left;
+  text-align: left;
+  max-width: calc(100% - 28px);
+  color: var(--color-slate-ink);
+}
+
+.oui-field .MuiInputLabel-outlined.MuiInputLabel-sizeMedium:not(.MuiInputLabel-shrink) {
+  transform: translate(0, 12px) scale(1);
+}
+
+.oui-field .MuiInputLabel-outlined.MuiInputLabel-sizeMedium.MuiInputLabel-shrink {
+  transform: translate(0, -5px) scale(0.75);
+  padding: 0 6px;
+  z-index: 1;
+  line-height: 1.4;
+  background-color: var(--color-pure-surface, #fff);
+}
+
+.oui-field .MuiInputLabel-outlined.MuiInputLabel-sizeSmall:not(.MuiInputLabel-shrink) {
+  transform: translate(0, 10px) scale(1);
+}
+
+.oui-field .MuiInputLabel-outlined.MuiInputLabel-sizeSmall.MuiInputLabel-shrink {
+  transform: translate(0, -4px) scale(0.75);
+  padding: 0 6px;
+  z-index: 1;
+  line-height: 1.4;
+  background-color: var(--color-pure-surface, #fff);
+}
+
+.oui-field .MuiInputLabel-outlined.Mui-focused {
+  color: var(--color-deep-cosmos, #001033);
+}
+
+/* Ancho compacto en formularios con label (diálogos) */
+.dialog-form .oui-field,
+.dialog-form .oui-input,
+.dialog-form .oui-select {
+  width: 100%;
+  max-width: var(--oui-form-field-max, 260px);
+}
+
+/* Consulta multimedia: ocupa todo el ancho del panel */
+.multimedia-consulta-form .oui-field,
+.multimedia-consulta-form .oui-input,
+.multimedia-consulta-form .oui-select {
+  width: 100%;
+  max-width: 100%;
+}
+
+.dialog-form .form-grid > :nth-child(5) .oui-field,
+.dialog-form .form-grid > :nth-child(5) .oui-input,
+.dialog-form .form-grid > :nth-child(5) .oui-select {
+  max-width: var(--oui-form-field-max-wide, 300px);
+}

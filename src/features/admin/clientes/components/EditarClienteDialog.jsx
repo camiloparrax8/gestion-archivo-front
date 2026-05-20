@@ -5,7 +5,7 @@ import { buildClienteCreatePayload } from '../utils/buildClienteCreatePayload';
 import { Button, Dialog, Input, Select } from '../../../../shared/ui';
 
 const TIPOS_DOCUMENTO = [
-  { value: '', label: '' },
+  { value: '', label: 'Seleccione tipo' },
   { value: 'CC', label: 'CC — Cédula de ciudadanía' },
   { value: 'CE', label: 'CE — Cédula de extranjería' },
   { value: 'NIT', label: 'NIT' },
@@ -92,9 +92,8 @@ export function EditarClienteDialog({ isOpen = false, cliente, onClose, onUpdate
     <Dialog
       isOpen={isOpen}
       title="Editar cliente"
-      description={clienteId ? `ID: ${clienteId}` : ''}
       onClose={handleClose}
-      size="xl"
+      size="form"
       disableBackdropClose={loading}
       footer={
         <div className="row actions-row dialog-footer-actions">
@@ -107,8 +106,8 @@ export function EditarClienteDialog({ isOpen = false, cliente, onClose, onUpdate
         </div>
       }
     >
-      <form id="form-editar-cliente" className="grid" onSubmit={handleSubmit}>
-        <div className="form-grid">
+      <form id="form-editar-cliente" className="dialog-form grid" onSubmit={handleSubmit}>
+        <div className="form-grid form-grid--dialog">
           <Select
             label="Tipo de documento"
             value={tipoDocumento}
@@ -146,15 +145,14 @@ export function EditarClienteDialog({ isOpen = false, cliente, onClose, onUpdate
             type="tel"
             value={telefono}
             onChange={(e) => setTelefono(e.target.value)}
-            placeholder="+57 300 0000000"
             widthVariant="full"
           />
-        </div>
-        <div className="row" style={{ marginTop: 8 }}>
-          <label className="checkbox-label">
-            <input type="checkbox" checked={activo} onChange={(e) => setActivo(e.target.checked)} />
-            Cliente activo
-          </label>
+          <div className="dialog-form__meta">
+            <label className="checkbox-label">
+              <input type="checkbox" checked={activo} onChange={(e) => setActivo(e.target.checked)} />
+              Cliente activo
+            </label>
+          </div>
         </div>
         {localError ? (
           <p className="dialog-inline-error" role="alert">

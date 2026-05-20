@@ -101,7 +101,7 @@ export function CrearLlaveDialog({
       isOpen={isOpen}
       title="Nueva API key"
       onClose={handleClose}
-      size="xl"
+      size="form"
       disableBackdropClose={loading}
       
       footer={
@@ -115,8 +115,8 @@ export function CrearLlaveDialog({
         </div>
       }
     >
-      <form id={formId} className="grid" onSubmit={handleSubmit}>
-        <div className="form-grid">
+      <form id={formId} className="dialog-form grid" onSubmit={handleSubmit}>
+        <div className="form-grid form-grid--dialog">
           <Input
             label="Nombre llave"
             value={nombre}

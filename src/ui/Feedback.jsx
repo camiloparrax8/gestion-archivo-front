@@ -1,14 +1,20 @@
+import { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Alert,
   AlertTitle,
+  Box,
   Collapse,
   IconButton,
   Snackbar,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import {
+  Check,
   CheckCircle,
   Close,
+  ContentCopy,
   Error as ErrorIcon,
   ExpandLess,
   ExpandMore,
@@ -18,9 +24,11 @@ import {
 
 const MUI_ALERT_VARIANTS = new Set(['filled', 'outlined', 'standard']);
 
+const DEFAULT_ALERT_VARIANT = 'standard';
+
 function resolveSeverityAndAlertVariant({ severity, variant, alertVariant }) {
   if (severity) {
-    return { severity, alertVariant: alertVariant ?? 'filled' };
+    return { severity, alertVariant: alertVariant ?? DEFAULT_ALERT_VARIANT };
   }
   if (variant != null && MUI_ALERT_VARIANTS.has(variant)) {
     return { severity: 'info', alertVariant: variant };
@@ -33,13 +41,78 @@ function resolveSeverityAndAlertVariant({ severity, variant, alertVariant }) {
     warning: 'warning',
     info: 'info',
   };
-  return { severity: map[legacy] || 'info', alertVariant: alertVariant ?? 'filled' };
+  return {
+    severity: map[legacy] || 'info',
+    alertVariant: alertVariant ?? DEFAULT_ALERT_VARIANT,
+  };
 }
 
+function CopyableSecret({ text, copyLabel = 'Copiar' }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }, [text]);
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.5,
+        mt: 1,
+        p: 0.75,
+        borderRadius: 1,
+        bgcolor: 'rgba(0, 0, 0, 0.06)',
+        maxWidth: '100%',
+      }}
+    >
+      <Typography
+        component="code"
+        variant="body2"
+        sx={{
+          flex: 1,
+          minWidth: 0,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          fontFamily: 'ui-monospace, monospace',
+          fontSize: '0.8rem',
+        }}
+      >
+        {text}
+      </Typography>
+      <Tooltip title={copied ? 'Copiado' : copyLabel}>
+        <IconButton
+          type="button"
+          size="small"
+          onClick={() => void handleCopy()}
+          aria-label={copyLabel}
+          sx={{ flexShrink: 0 }}
+        >
+          {copied ? <Check fontSize="small" /> : <ContentCopy fontSize="small" />}
+        </IconButton>
+      </Tooltip>
+    </Box>
+  );
+}
+
+/**
+ * Notificación tipo snackbar. Con `copyText` muestra la llave y un botón para copiarla.
+ */
 const Feedback = ({
   open = true,
   onClose,
   message = '',
+  copyText,
+  copyLabel,
   title,
   severity: severityProp,
   variant = 'info',
@@ -101,7 +174,10 @@ const Feedback = ({
 
   const canClose = Boolean(onClose);
   const showClose = showCloseButton && canClose;
-  const snackbarAutoHide = canClose && autoHideDuration > 0 ? autoHideDuration : null;
+  const resolvedAutoHide =
+    copyText && autoHideDuration > 0 ? Math.max(autoHideDuration, 12000) : autoHideDuration;
+  const snackbarAutoHide = canClose && resolvedAutoHide > 0 ? resolvedAutoHide : null;
+  const snackbarMaxWidth = copyText ? 'min(480px, 96vw)' : maxWidth;
 
   const showExpand = Boolean(showExpandButton && expandedContent && onToggleExpand);
   const actionSlot =
@@ -138,15 +214,16 @@ const Feedback = ({
       autoHideDuration={snackbarAutoHide}
       onClose={handleClose}
       anchorOrigin={getPosition()}
-      sx={{
-        maxWidth,
+      sx={(theme) => ({
+        zIndex: theme.zIndex.modal + 700,
+        maxWidth: snackbarMaxWidth,
         '& .MuiAlert-root': {
           width: '100%',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
           borderRadius: '8px',
-          border: `1px solid ${getSeverityColor()}20`,
+          border: `1px solid ${getSeverityColor()}33`,
         },
-      }}
+      })}
       {...props}
     >
       <Alert
@@ -170,6 +247,8 @@ const Feedback = ({
 
         <div>
           <div style={{ marginBottom: expandedContent && isExpanded ? '8px' : '0' }}>{message}</div>
+
+          {copyText ? <CopyableSecret text={copyText} copyLabel={copyLabel} /> : null}
 
           {expandedContent ? (
             <Collapse in={isExpanded} timeout="auto">
@@ -195,7 +274,9 @@ const Feedback = ({
 Feedback.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  message: PropTypes.string,
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  copyText: PropTypes.string,
+  copyLabel: PropTypes.string,
   title: PropTypes.string,
   severity: PropTypes.oneOf(['success', 'error', 'warning', 'info']),
   variant: PropTypes.oneOf([
