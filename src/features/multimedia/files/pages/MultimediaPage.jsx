@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ApiHttpError } from '../../../../core/api/apiClient';
-import { useAdminClientesService } from '../../../admin/clientes/services/adminClientesService';
-import { useAuth } from '../../../../shared/auth/useAuth';
-import { Button, Card, CopyIconButton, Dialog, Feedback, Input, SectionHeader, Select } from '../../../../shared/ui';
+import { ApiHttpError } from '@core/api/apiClient';
+import { useAdminClientesService } from '@features/admin/clientes/services/adminClientesService';
+import { useAuth } from '@shared/auth/useAuth';
+import { Button, Card, CopyIconButton, Dialog, Feedback, Input, SectionHeader, Select } from '@shared/ui';
 import { MultimediaFilesTable } from '../components/MultimediaFilesTable';
 import { ENTIDAD_MULTIMEDIA_SEGMENTO, useMultimediaService } from '../services/multimediaService';
 

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ApiHttpError } from '../../../../core/api/apiClient';
-import { AdminLlavesTable } from '../../../admin/clientes/components/AdminLlavesTable';
-import { CrearLlaveDialog } from '../../../admin/clientes/components/CrearLlaveDialog';
+import { ApiHttpError } from '@core/api/apiClient';
+import { AdminLlavesTable } from '@features/admin/clientes/components/AdminLlavesTable';
+import { CrearLlaveDialog } from '@features/admin/clientes/components/CrearLlaveDialog';
 import { useClientApiKeysService } from '../services/clientApiKeysService';
-import { Button, Card, Dialog, Feedback, SectionHeader } from '../../../../shared/ui';
+import { Button, Card, Dialog, Feedback, SectionHeader } from '@shared/ui';
 
 function errorMessage(error) {
   if (error instanceof ApiHttpError) return `${error.message} (HTTP ${error.status})`;

@@ -7,7 +7,8 @@ import {
   DataTableScroll,
   DataTableTable,
   DataTableToolbar,
-} from '../../../../ui/ui-unique/DataTable';
+  RefreshIconButton,
+} from '@shared/ui';
 
 function rowPublicId(row) {
   const v = row?.publicId ?? row?.id;
@@ -40,23 +41,12 @@ export function AdminClientesTable({
 
   const toolbarActions = (
     <>
-      <button
-        type="button"
-        className="icon-btn icon-btn--ghost icon-btn--accent"
-        disabled={loading}
+      <RefreshIconButton
+        loading={loading}
         onClick={onRefresh}
-        aria-label="Actualizar listado de clientes"
+        label="Actualizar listado de clientes"
         title="Actualizar listado"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-          <path d="M23 4v6h-6M1 20v-6h6" strokeLinecap="round" />
-          <path
-            d="M3.51 9a9 9 0 0114.13-3.36L23 10M1 14l5.36 4.36A9 9 0 0020.49 15"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+      />
       <button type="button" className="btn btn-primary" disabled={loading} onClick={() => onNuevoCliente?.()}>
         Nuevo cliente
       </button>

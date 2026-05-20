@@ -21,8 +21,8 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import VpnKeyRoundedIcon from '@mui/icons-material/VpnKeyRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import { useAuth } from '../../hooks/useAuth';
-import { ColorModeIconDropdown } from '../../mui-theme/ColorModeIconDropdown';
+import { useAuth } from '@hooks/useAuth';
+import { ColorModeIconDropdown } from '@mui-theme/ColorModeIconDropdown';
 
 const drawerWidth = 256;
 

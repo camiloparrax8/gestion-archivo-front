@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ApiHttpError } from '../../../../core/api/apiClient';
+import { ApiHttpError } from '@core/api/apiClient';
 import { AdminClientesTable } from '../components/AdminClientesTable';
 import { ClienteLlavesDialog } from '../components/ClienteLlavesDialog';
 import { CrearClienteDialog } from '../components/CrearClienteDialog';
 import { EditarClienteDialog } from '../components/EditarClienteDialog';
 import { useAdminClientesService } from '../services/adminClientesService';
-import { Card, Feedback, SectionHeader } from '../../../../shared/ui';
+import { Card, Feedback, SectionHeader } from '@shared/ui';
 
 function idClienteRow(row) {
   const v = row?.publicId ?? row?.id;

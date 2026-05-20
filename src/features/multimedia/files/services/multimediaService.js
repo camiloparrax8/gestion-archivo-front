@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { apiRequest } from '../../../../core/api/apiClient';
+import { apiRequest } from '@core/api/apiClient';
 export const MULTIMEDIA_V1_PREFIX = '/api/v1/multimedia';
 export const ENTIDAD_MULTIMEDIA_SEGMENTO = 'usuarios';
 const enc = (value) => encodeURIComponent(value.trim());

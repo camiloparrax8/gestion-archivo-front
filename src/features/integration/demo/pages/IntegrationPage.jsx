@@ -1,4 +1,4 @@
-import { env } from '../../../../config/env';
+import { env } from '@config/env';
 import { AuthSection } from '../components/AuthSection';
 import { AdminSection } from '../components/AdminSection';
 import { MultimediaSection } from '../components/MultimediaSection';

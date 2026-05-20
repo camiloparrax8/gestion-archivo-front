@@ -1,9 +1,13 @@
 import { useMemo, useState } from 'react';
-import { ApiHttpError } from '../../../../core/api/apiClient';
-import { adminApi } from '../../../../api/adminApi';
-import { authApi } from '../../../../api/authApi';
-import { buildClienteCreatePayload } from '../../../admin/clientes/utils/buildClienteCreatePayload';
-import { ENTIDAD_MULTIMEDIA_SEGMENTO, rutaMultimediaPath, useMultimediaService, } from '../../../multimedia/files/services/multimediaService';
+import { ApiHttpError } from '@core/api/apiClient';
+import { adminApi } from '@api/adminApi';
+import { authApi } from '@api/authApi';
+import { buildClienteCreatePayload } from '@features/admin/clientes/utils/buildClienteCreatePayload';
+import {
+  ENTIDAD_MULTIMEDIA_SEGMENTO,
+  rutaMultimediaPath,
+  useMultimediaService,
+} from '@features/multimedia/files/services/multimediaService';
 function getErrorMessage(error) {
     if (error instanceof ApiHttpError)
         return `${error.message} (HTTP ${error.status})`;

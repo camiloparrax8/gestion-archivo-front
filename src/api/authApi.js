@@ -1,4 +1,4 @@
-import { env } from '../config/env';
+import { env } from '@config/env';
 import { apiRequest } from './apiClient';
 export const authApi = {
     register: (payload) => apiRequest('/api/v1/auth/register', {

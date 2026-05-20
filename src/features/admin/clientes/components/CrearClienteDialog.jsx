@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ApiHttpError } from '../../../../core/api/apiClient';
+import { ApiHttpError } from '@core/api/apiClient';
 import { useAdminClientesService } from '../services/adminClientesService';
-import { Button, Dialog, Input, Select } from '../../../../shared/ui';
+import { Button, Dialog, Input, Select } from '@shared/ui';
 import { buildClienteCreatePayload } from '../utils/buildClienteCreatePayload';
 
 const TIPOS_DOCUMENTO = [
