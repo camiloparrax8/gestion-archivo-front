@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAdminClientesService } from '../../clientes/services/adminClientesService';
+import { useAdminClientesService } from '@features/admin/clientes/services/adminClientesService';
 export function useAdminApiKeysService() {
     const clientesService = useAdminClientesService();
     return useMemo(

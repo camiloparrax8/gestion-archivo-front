@@ -1,5 +1,5 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
-import { authApi } from '../api/authApi';
+import { authApi } from '@api/authApi';
 const AUTH_STORAGE_KEY = 'orion_auth';
 const defaultValue = {
     token: '',

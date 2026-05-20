@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ApiHttpError } from '../../../../core/api/apiClient';
+import { ApiHttpError } from '@core/api/apiClient';
 import { useAdminClientesService } from '../services/adminClientesService';
 import { buildClienteCreatePayload } from '../utils/buildClienteCreatePayload';
-import { Button, Dialog, Input, Select } from '../../../../shared/ui';
+import { Button, Dialog, Input, Select } from '@shared/ui';
 
 const TIPOS_DOCUMENTO = [
   { value: '', label: 'Seleccione tipo' },

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ApiHttpError } from '../../../../core/api/apiClient';
+import { ApiHttpError } from '@core/api/apiClient';
 import { useAdminClientesService } from '../services/adminClientesService';
-import { Button, Dialog } from '../../../../shared/ui';
+import { Button, Dialog } from '@shared/ui';
 import { AdminLlavesTable } from './AdminLlavesTable';
 import { CrearLlaveDialog } from './CrearLlaveDialog';
 

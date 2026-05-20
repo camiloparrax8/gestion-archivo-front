@@ -11,9 +11,9 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import { ApiHttpError } from '../../api/apiClient';
-import { useAuth } from '../../hooks/useAuth';
-import { ColorModeIconDropdown } from '../../mui-theme/ColorModeIconDropdown';
+import { ApiHttpError } from '@api/apiClient';
+import { useAuth } from '@hooks/useAuth';
+import { ColorModeIconDropdown } from '@mui-theme/ColorModeIconDropdown';
 
 function errorMessage(error) {
   if (error instanceof ApiHttpError) return `${error.message} (HTTP ${error.status})`;

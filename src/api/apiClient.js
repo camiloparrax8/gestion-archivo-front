@@ -1,4 +1,4 @@
-import { env } from '../config/env';
+import { env } from '@config/env';
 export class ApiHttpError extends Error {
     status;
     payload;

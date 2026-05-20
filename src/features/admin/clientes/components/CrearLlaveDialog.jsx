@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ApiHttpError } from '../../../../core/api/apiClient';
+import { ApiHttpError } from '@core/api/apiClient';
 import { useAdminClientesService } from '../services/adminClientesService';
-import { Button, Dialog, Input } from '../../../../shared/ui';
+import { Button, Dialog, Input } from '@shared/ui';
 
 function errorMessage(error) {
   if (error instanceof ApiHttpError) return `${error.message} (HTTP ${error.status})`;

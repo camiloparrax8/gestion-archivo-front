@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useAuth } from '../../../../shared/auth/useAuth';
-import { apiRequest } from '../../../../core/api/apiClient';
+import { useAuth } from '@shared/auth/useAuth';
+import { apiRequest } from '@core/api/apiClient';
 export function useAdminClientesService() {
     const { token } = useAuth();
     return useMemo(() => {

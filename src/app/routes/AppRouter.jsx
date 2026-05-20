@@ -1,31 +1,31 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { MainLayout } from '../../components/layout/MainLayout';
-import { ProtectedRoute } from '../../routes/ProtectedRoute';
-import { RequireRoleRoute } from '../../routes/RequireRoleRoute';
-import { RootRedirect } from '../../routes/RootRedirect';
+import { MainLayout } from '@components/layout/MainLayout';
+import { ProtectedRoute } from '@routes/ProtectedRoute';
+import { RequireRoleRoute } from '@routes/RequireRoleRoute';
+import { RootRedirect } from '@routes/RootRedirect';
 import { RoutePageFallback } from './RoutePageFallback';
 
 const LoginPage = lazy(() =>
-  import('../../pages/auth/LoginPage').then((m) => ({ default: m.LoginPage })),
+  import('@pages/auth/LoginPage').then((m) => ({ default: m.LoginPage })),
 );
 const MultimediaPage = lazy(() =>
-  import('../../features/multimedia/files/pages/MultimediaPage').then((m) => ({
+  import('@features/multimedia/files/pages/MultimediaPage').then((m) => ({
     default: m.MultimediaPage,
   })),
 );
 const ClientesPage = lazy(() =>
-  import('../../features/admin/clientes/pages/ClientesPage').then((m) => ({
+  import('@features/admin/clientes/pages/ClientesPage').then((m) => ({
     default: m.ClientesPage,
   })),
 );
 const ApiKeysPage = lazy(() =>
-  import('../../features/admin/api_keys/pages/ApiKeysPage').then((m) => ({
+  import('@features/admin/api_keys/pages/ApiKeysPage').then((m) => ({
     default: m.ApiKeysPage,
   })),
 );
 const MisApiKeysPage = lazy(() =>
-  import('../../features/client/api_keys/pages/MisApiKeysPage').then((m) => ({
+  import('@features/client/api_keys/pages/MisApiKeysPage').then((m) => ({
     default: m.MisApiKeysPage,
   })),
 );

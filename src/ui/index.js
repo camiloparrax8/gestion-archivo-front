@@ -5,5 +5,6 @@ export * from './Dialog';
 export { default as Feedback } from './Feedback';
 export { Input, default } from './ui-unique/Input';
 export { CopyIconButton } from './ui-unique/CopyIconButton';
+export { RefreshIconButton } from './ui-unique/RefreshIconButton';
 export * from './SectionHeader';
 export { default as Select } from './Select';
